@@ -46,7 +46,21 @@ class Movement:
         self.path = path if path is not None else []
 
 
+# This is where our Heuristic for how close the cube is to be solved will go
+def heuristic(cube: Cube):
+    heuristicscores = []
 
+    # loop over all 6 faces of the cube
+    for side in [cube.Front, cube.Back, cube.Left, cube.Right, cube.Up, cube.Down]:
+        heuristicface = np.array(side.facevalue)
+        flat = heuristicface.flatten()
+        missingvaluesface = 9 - len(np.unique(flat))
+
+        heuristicscores.append(missingvaluesface)
+
+    heuristicevaluation = math.ceil(max(heuristicscores) / 3)
+    print(f"Heuristic evaluation of cube is {heuristicevaluation}")
+    return heuristicevaluation
 
 # Initializes our objects that are needed for the functions to run properly
 def initializefunction():
