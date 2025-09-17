@@ -282,6 +282,26 @@ def printCube(cubeObject):
     for i in [cubeObject.Down]:
          print(f"\t {i.facevalue[0]}\n\t {i.facevalue[1]}\n\t {i.facevalue[2]}")
     print("")
+
+def randomizer(movelist, movevalue, previous_var, cubeObject):
+    print("Applying random move")
+    print("Move value is", movevalue)
+    for i in range(0, movevalue):
+        print("Test")
+        random_var = random.randint(0, 11)
+        while random_var == previous_var:
+            print("Same move as last time, rerolling")
+            random_var = random.randint(0, 11)
+        movechosen = movelist[random_var]
+        pathprint = get_path_from_movement(movechosen)
+        #print("Path is", [side.centercolor for side in pathprint[0]], "with orientations", pathprint[1])
+        applyMovement(movechosen, pathprint)
+
+        printCube(cubeObject)
+        heuristic(cubeObject)
+        previous_var = random_var
+    return previous_var
+
 import random
 import numpy as np
 import math
@@ -294,25 +314,22 @@ heuristic(cubeObject)
 
 newmove = 1
 previous_var = -1
+
 while(newmove == 1):
     user_input = input("Would you like to complete a move? Y/N:\n")
 
     match user_input:
         case "Y" | "y":
-            print("Applying random move")
-            random_var = random.randint(0, 11)
-            while random_var == previous_var:
-                print("Same move as last time, rerolling")
-                random_var = random.randint(0, 11)
-
-            movechosen = movelist[random_var]
-            pathprint = get_path_from_movement(movechosen)
-            #print("Path is", [side.centercolor for side in pathprint[0]], "with orientations", pathprint[1])
-            applyMovement(movechosen, pathprint)
-
-            printCube(cubeObject)
-            heuristic(cubeObject)
-            previous_var = random_var
+            while True:
+                try:
+                    nummoves = int(input("How many moves woud you like to apply (3-20 recommended):\n"))
+                    if 3 <= nummoves <= 20:
+                        break
+                    else:
+                        print("Please enter a number between 3 and 20.")
+                except ValueError:
+                    print("Invalid input, please enter a number.")
+            previous_var = randomizer(movelist, nummoves, previous_var, cubeObject)
         case "N" | "n":
             print("Exiting movements.")
             newmove = 0
