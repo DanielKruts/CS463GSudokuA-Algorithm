@@ -4,50 +4,8 @@
                  until they decide to stop.
     Last Updated: 9/12/2025
 '''
-#Might be removed, but starter class definitions for CubeSide and Movement
-from dis import findlinestarts
-from tkinter.filedialog import Directory
-
-class CubeSide:
-    # self initialization created for CubeSide to fix centervalue variable issues
-    def __init__(self, facevalue, centercolor):
-        self.facevalue = facevalue
-        self.centercolor = centercolor
-        self.centervalue = str(facevalue[1][1]) + self.centercolor
-
-#Creates a cube with 6 predetermined sides of a solved cube
-class Cube:
-    def __init__(self):
-        self.Front = CubeSide([[9, 5, 2], [3, 8, 1], [6, 7, 4]], 'Y')
-        self.Back = CubeSide([[9, 5, 2], [3, 8, 1], [6, 7, 4]], 'P')
-        self.Left = CubeSide([[7, 1, 8], [2, 4, 6], [9, 3, 5]], 'B')
-        self.Right = CubeSide([[4, 6, 3], [7, 5, 9], [1, 2, 8]], 'G')
-        self.Up = CubeSide([[8, 1, 3], [4, 6, 7], [2, 9, 5]], 'O')
-        self.Down = CubeSide([[1, 2, 8], [5, 3, 9], [7, 4, 6]], 'R')
-
-# Class Movement
-class Movement:
-    '''
-    Self initialization takes multiple parameters
-    cube - the whole Cube object
-    face - which face the move applies to ("Front", "Left", "Right", etc.)
-    colRow - "C" (column) or "R" (row)
-    position - 0 (left/top) or 2 (right/bottom)
-    direction - 0 or 1 (clockwise/counterclockwise or down/up/left/right depending on context)
-    name - shorthand label like "FC00"
-    '''
-    def __init__(self, cube, face, colrow, position, direction, name, path=None):
-        self.cube = cube
-        self.face = face
-        self.colRow = colrow
-        self.position = position
-        self.direction = direction
-        self.name = name
-        self.path = path if path is not None else []
-
-
 # This is where our Heuristic for how close the cube is to be solved will go
-def heuristic(cube: Cube):
+def heuristic(cube):
     heuristicscores = []
 
     # loop over all 6 faces of the cube
@@ -90,7 +48,7 @@ def initializefunction():
     return movelist, cubeObject
 
 # Determines whether to apply a column or row moved based on the Movement object passed to it
-def applyMovement(movement: Movement, path: list[CubeSide]):
+def applyMovement(movement, path):
     cube = movement.cube
 
     if movement.colRow == "C":  # column move
@@ -102,7 +60,7 @@ def applyMovement(movement: Movement, path: list[CubeSide]):
         exit()
 
 # Takes a given Cube, Movement, and path to rotate the appropriate face and apply the correct column move
-def applyColumnMove(cube: Cube, movement: Movement, path: list[CubeSide]):
+def applyColumnMove(cube, movement, path):
     print("Movement Code:", movement.name, "| face:", movement.face, "| col/row:", movement.colRow, "| position:", movement.position, "| direction:", movement.direction)
     if movement.face == "Front":
         if movement.position == 0:  # Left column
@@ -139,7 +97,7 @@ def applyColumnMove(cube: Cube, movement: Movement, path: list[CubeSide]):
         exit()
 
 # Takes the given Cube, Movement, and path to correctly rotate the appropriate face and apply the correct row move
-def applyRowMove(cube: Cube, movement: Movement, path: list[CubeSide]):
+def applyRowMove(cube, movement, path):
     print("Movement Code:", movement.name, "| face:", movement.face, "| col/row:", movement.colRow, "| position:", movement.position, "| direction:", movement.direction)
     if movement.face == "Front":
         if movement.position == 0:  # Top row
@@ -161,7 +119,7 @@ def applyRowMove(cube: Cube, movement: Movement, path: list[CubeSide]):
         exit()
 
 # Returns the path of face given a movement object
-def get_path_from_movement(movement: Movement):
+def get_path_from_movement(movement):
     """
     Returns the faces and strip orientation for a move.
     face: "Front", "Left", etc.
@@ -191,7 +149,7 @@ def rotate_face_clockwise(face):
 def rotate_face_counterclockwise(face):
     return [list(row) for row in zip(*face)][::-1]
 #Moves the front face clockwise or counterclockwise, considering the parameter wise, (0 is clockwise, 1 is counterclockwise)
-def move(movement:Movement, path: list[CubeSide]):
+def move(movement, path):
     """
     Rotates the edge strips around a given face.
     - cube: full Cube object
@@ -327,6 +285,9 @@ def printCube(cubeObject):
 import random
 import numpy as np
 import math
+import AStarAlgorithm
+import CubeClass 
+from CubeClass import Cube, Movement, CubeSide
 
 movelist,cubeObject = initializefunction()
 heuristic(cubeObject)
