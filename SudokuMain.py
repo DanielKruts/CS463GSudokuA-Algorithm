@@ -297,6 +297,7 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
         #print("Path is", [side.centercolor for side in pathprint[0]], "with orientations", pathprint[1])
         applyMovement(movechosen, pathprint)
 
+
         printCube(cubeObject)
         heuristic(cubeObject)
         previous_var = random_var
@@ -305,12 +306,12 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
 import random
 import numpy as np
 import math
-import AStarAlgorithm
-import CubeClass 
-from CubeClass import Cube, Movement, CubeSide
+from AStarAlgorithm import *
+from CubeClass import *
 
 movelist,cubeObject = initializefunction()
 heuristic(cubeObject)
+
 
 newmove = 1
 previous_var = -1
