@@ -4,6 +4,8 @@
                  until they decide to stop.
     Last Updated: 9/12/2025
 '''
+
+
 # This is where our Heuristic for how close the cube is to be solved will go
 def heuristic(cube):
     heuristicscores = []
@@ -311,8 +313,6 @@ from CubeClass import *
 
 movelist,cubeObject = initializefunction()
 heuristic(cubeObject)
-
-
 newmove = 1
 previous_var = -1
 
@@ -330,7 +330,7 @@ while(newmove == 1):
                         print("Please enter a number between 3 and 20.")
                 except ValueError:
                     print("Invalid input, please enter a number.")
-            previous_var = randomizer(movelist, nummoves, previous_var, cubeObject)
+            previous_var = randomizer(movelist, 2, previous_var, cubeObject)
         case "N" | "n":
             print("Exiting movements.")
             newmove = 0
