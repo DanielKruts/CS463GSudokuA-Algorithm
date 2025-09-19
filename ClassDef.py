@@ -2,6 +2,11 @@
     Desc: Cube classes for SudokuMain.py
     Last Updated: 9/17/2025
 '''
+import numpy as np
+import math
+import heapq
+import copy
+
 class CubeSide:
     # self initialization created for CubeSide to fix centervalue variable issues
     def __init__(self, facevalue, centercolor):
@@ -38,3 +43,22 @@ class Movement:
         self.direction = direction
         self.name = name
         self.path = path if path is not None else []
+
+class Node:
+    # Initialization takes a cube object, heuristic value, cost to reach node, and parent node(Another cube object)
+    def __init__(self, cube, g=0, h=0, parent=None):
+        self.cube = copy.deepcopy(cube) # State of Cube
+        self.g = g # Cost to reach node
+        self.h = h  # Heuristic(cube)
+        self.parent = parent # Parent Node
+        self.f = g + h # Total Cost
+
+    def __eq__(self, other): # Defines equality function for comparing Node objects
+        return self.cube == other.cube
+
+    def __lt__(self, other): # Defines less than function for Node objects (Makes priority queue work)
+        return self.f < other.f
+
+class Hashmap:
+    def __init__(self):
+        self.MovementHashmap = dict()

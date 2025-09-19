@@ -7,27 +7,8 @@ import numpy as np
 import math
 import heapq
 import copy
-import CubeClass
-from CubeClass import Cube, CubeSide, Movement
-
-class Node:
-    # Initialization takes a cube object, heuristic value, cost to reach node, and parent node(Another cube object)
-    def __init__(self, cube, g=0, h=0, parent=None):
-        self.cube = copy.deepcopy(cube) # State of Cube
-        self.g = g # Cost to reach node
-        self.h = h  # Heuristic(cube)
-        self.parent = parent # Parent Node
-        self.f = g + h # Total Cost
-
-    def __eq__(self, other): # Defines equality function for comparing Node objects
-        return self.cube == other.cube
-
-    def __lt__(self, other): # Defines less than function for Node objects (Makes priority queue work)
-        return self.f < other.f
-
-class Hashmap:
-    def __init__(self):
-        self.MovementHashmap = dict()
+import ClassDef
+from ClassDef import *
 
 def hashmapadd(cube, cubecounter, movecounter):
     keyinitialize = str(cubecounter) + "&" + str(movecounter)
@@ -39,8 +20,8 @@ def hashmapaccess(cubecounter, movecounter):
     return Hashmap.MovementHashmapp[str(cubecounter) + "&" + str(movecounter)]
 
 def hashmapprint():
-    for key, value in Hashmap.MovementHashmapp.items():
-        print(f"{key}: {value}")
+    for key in Hashmap.MovementHashmapp.items():
+        print(f"{key}")
 
 
 

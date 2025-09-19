@@ -309,7 +309,7 @@ import random
 import numpy as np
 import math
 from AStarAlgorithm import *
-from CubeClass import *
+from ClassDef import *
 
 movelist,cubeObject = initializefunction()
 heuristic(cubeObject)
