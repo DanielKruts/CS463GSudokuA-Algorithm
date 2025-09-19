@@ -16,13 +16,15 @@ class CubeSide:
 
 #Creates a cube with 6 predetermined sides of a solved cube
 class Cube:
-    def __init__(self):
+    def __init__(self, cubecounter, cubename):
         self.Front = CubeSide([[9, 5, 2], [3, 8, 1], [6, 7, 4]], 'Y')
         self.Back = CubeSide([[9, 5, 2], [3, 8, 1], [6, 7, 4]], 'P')
         self.Left = CubeSide([[7, 1, 8], [2, 4, 6], [9, 3, 5]], 'B')
         self.Right = CubeSide([[4, 6, 3], [7, 5, 9], [1, 2, 8]], 'G')
         self.Up = CubeSide([[8, 1, 3], [4, 6, 7], [2, 9, 5]], 'O')
         self.Down = CubeSide([[1, 2, 8], [5, 3, 9], [7, 4, 6]], 'R')
+        self.cubecounter = cubecounter
+        self.cubename = cubename
 
 # Class Movement
 class Movement:

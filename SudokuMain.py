@@ -24,30 +24,52 @@ def heuristic(cube):
 
 # Initializes our objects that are needed for the functions to run properly
 def initializefunction():
-    cubeObject = Cube()
+    
+    cube1 = Cube(cubecounter = 1, cubename = "Pacman")
 
-    FC00 = Movement(cubeObject, face="Front", colrow="C", position=0, direction=0, name="FC00")
-    FC01 = Movement(cubeObject, face="Front", colrow="C", position=0, direction=1, name="FC01")
-    FC10 = Movement(cubeObject, face="Front", colrow="C", position=2, direction=0, name="FC10")
-    FC11 = Movement(cubeObject, face="Front", colrow="C", position=2, direction=1, name="FC11")
+    FC00 = Movement(cube1, face="Front", colrow="C", position=0, direction=0, name="FC00")
+    FC01 = Movement(cube1, face="Front", colrow="C", position=0, direction=1, name="FC01")
+    FC10 = Movement(cube1, face="Front", colrow="C", position=2, direction=0, name="FC10")
+    FC11 = Movement(cube1, face="Front", colrow="C", position=2, direction=1, name="FC11")
 
-    FR00 = Movement(cubeObject, face="Front", colrow="R", position=0, direction=0, name="FR00")
-    FR01 = Movement(cubeObject, face="Front", colrow="R", position=0, direction=1, name="FR01")
-    FR10 = Movement(cubeObject, face="Front", colrow="R", position=2, direction=0, name="FR10")
-    FR11 = Movement(cubeObject, face="Front", colrow="R", position=2, direction=1, name="FR11")
+    FR00 = Movement(cube1, face="Front", colrow="R", position=0, direction=0, name="FR00")
+    FR01 = Movement(cube1, face="Front", colrow="R", position=0, direction=1, name="FR01")
+    FR10 = Movement(cube1, face="Front", colrow="R", position=2, direction=0, name="FR10")
+    FR11 = Movement(cube1, face="Front", colrow="R", position=2, direction=1, name="FR11")
 
-    LC00 = Movement(cubeObject, face="Left", colrow="C", position=0, direction=0, name="LC00")
-    LC01 = Movement(cubeObject, face="Left", colrow="C", position=0, direction=1, name="LC01")
-    LC10 = Movement(cubeObject, face="Left", colrow="C", position=2, direction=0, name="LC10")
-    LC11 = Movement(cubeObject, face="Left", colrow="C", position=2, direction=1, name="LC11")
+    LC00 = Movement(cube1, face="Left", colrow="C", position=0, direction=0, name="LC00")
+    LC01 = Movement(cube1, face="Left", colrow="C", position=0, direction=1, name="LC01")
+    LC10 = Movement(cube1, face="Left", colrow="C", position=2, direction=0, name="LC10")
+    LC11 = Movement(cube1, face="Left", colrow="C", position=2, direction=1, name="LC11")
 
-    printCube(cubeObject)
+
+    cube2 = copy.deepcopy(cube1)
+    cube2.cubecounter = 2
+    cube2.cubename = "Blinky"
+
+    cube3 = copy.deepcopy(cube1)
+    cube3.cubecounter = 3
+    cube3.cubename = "Pinky"
+
+
+    cube4 = copy.deepcopy(cube1)
+    cube4.cubecounter = 4
+    cube4.cubename = "Inky"
+
+
+    cube5 = copy.deepcopy(cube1)
+    cube5.cubecounter = 5
+    cube5.cubename = "Clide"
+
+
 
     movelist = [FC00, FC01, FC10, FC11,
                 FR00, FR01, FR10, FR11,
                 LC00, LC01, LC10, LC11]
 
-    return movelist, cubeObject
+    cubeArray = [cube1, cube2, cube3, cube4, cube5]
+
+    return movelist, cubeArray
 
 # Determines whether to apply a column or row moved based on the Movement object passed to it
 def applyMovement(movement, path):
@@ -289,7 +311,6 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
     print("Applying random move")
     print("Move value is", movevalue)
     for i in range(0, movevalue):
-        print("Test")
         random_var = random.randint(0, 11)
         while random_var == previous_var:
             print("Same move as last time, rerolling")
@@ -308,29 +329,34 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
 import random
 import numpy as np
 import math
+import copy
 from AStarAlgorithm import *
 from ClassDef import *
 
-movelist,cubeObject = initializefunction()
-heuristic(cubeObject)
+movelist,cubeArray = initializefunction()
 newmove = 1
 previous_var = -1
 
-while(newmove == 1):
+while newmove == 1:
     user_input = input("Would you like to complete a move? Y/N:\n")
-
     match user_input:
         case "Y" | "y":
             while True:
                 try:
-                    nummoves = int(input("How many moves woud you like to apply (3-20 recommended):\n"))
+                    nummoves = int(input("How many moves would you like to apply (3-20 recommended):\n"))
                     if 3 <= nummoves <= 20:
+                        for item in cubeArray:
+                            print("WERE PRINTING THE FUCKING CUBE FUCKHEADS. NEW CUBE!!!")
+                            print("Cube is: " + item.cubename)
+                            printCube(item)
+                            previous_var = randomizer(movelist, nummoves, previous_var, item)
+                            heuristic(item)
+                            print("\n\n\n\n\n")
                         break
                     else:
                         print("Please enter a number between 3 and 20.")
                 except ValueError:
                     print("Invalid input, please enter a number.")
-            previous_var = randomizer(movelist, 2, previous_var, cubeObject)
         case "N" | "n":
             print("Exiting movements.")
             newmove = 0
