@@ -25,7 +25,29 @@ class Cube:
         self.Down = CubeSide([[1, 2, 8], [5, 3, 9], [7, 4, 6]], 'R')
         self.cubecounter = cubecounter
         self.cubename = cubename
+    def __eq__(self, other):
+        if not isinstance(other, Cube):
+            return False
+        return (self.Front.facevalue == other.Front.facevalue and
+                self.Back.facevalue  == other.Back.facevalue  and
+                self.Left.facevalue  == other.Left.facevalue  and
+                self.Right.facevalue == other.Right.facevalue and
+                self.Up.facevalue    == other.Up.facevalue    and
+                self.Down.facevalue  == other.Down.facevalue)
+    def __hash__(self):
+        def __hash__(self):
+        #Hash based on faces so Cube can be used in sets/dicts.
 
+        #Note: I have no clue how this section works and it is for testing purposes only to ensure
+        # Cube class will hash properly
+            return hash((
+                tuple(map(tuple, self.Front.facevalue)),
+                tuple(map(tuple, self.Back.facevalue)),
+                tuple(map(tuple, self.Left.facevalue)),
+                tuple(map(tuple, self.Right.facevalue)),
+                tuple(map(tuple, self.Up.facevalue)),
+                tuple(map(tuple, self.Down.facevalue))
+            ))
 # Class Movement
 class Movement:
     '''
@@ -50,9 +72,9 @@ class Node:
     # Initialization takes a cube object, heuristic value, cost to reach node, and parent node(Another cube object)
     def __init__(self, cube, g=0, h=0, parent=None):
         self.cube = copy.deepcopy(cube) # State of Cube
+        self.parent = parent # Parent Node
         self.g = g # Cost to reach node
         self.h = h  # Heuristic(cube)
-        self.parent = parent # Parent Node
         self.f = g + h # Total Cost
 
     def __eq__(self, other): # Defines equality function for comparing Node objects
