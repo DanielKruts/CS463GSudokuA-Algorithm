@@ -76,12 +76,7 @@ while newmove == 1:
                     nummoves = int(input("How many moves would you like to apply (3-20 recommended):\n"))
                     if 1 <= nummoves <= 20:
                         for item in cubeArray:
-                            print("WERE PRINTING THE FUCKING CUBE FUCKHEADS. NEW CUBE!!!")
-                            print("Cube is: " + item.cubename)
-                            printCube(item)
-                            previous_var = randomizer(movelist, nummoves, previous_var, item)
-                            heuristic(item)
-                            a_star_search(item, goalCube, movelist)
+                            previous_var = randomizer(movelist, nummoves, previous_var, item, goalCube)
                             print("\n\n\n\n\n")
                         break
                     else:

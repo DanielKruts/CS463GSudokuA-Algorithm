@@ -261,7 +261,9 @@ def printCube(cubeObject):
          print(f"\t {i.facevalue[0]}\n\t {i.facevalue[1]}\n\t {i.facevalue[2]}")
     print("")
 
-def randomizer(movelist, movevalue, previous_var, cubeObject):
+def randomizer(movelist, movevalue, previous_var, cubeObject, goalCube):
+    print("Cube is: " + cubeObject.cubename)
+    printCube(cubeObject)
     print("Applying random move")
     print("Move value is", movevalue)
     for i in range(0, movevalue):
@@ -274,7 +276,7 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
         #print("Path is", [side.centercolor for side in pathprint[0]], "with orientations", pathprint[1])
         applyMovement(movelist[random_var].cube, movechosen, pathprint)
 
-
+        a_star_search(item, goalCube, movelist)
         printCube(cubeObject)
         heuristic(cubeObject)
         previous_var = random_var
