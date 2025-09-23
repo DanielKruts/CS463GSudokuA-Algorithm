@@ -11,18 +11,7 @@ import copy
 import random
 from ClassDef import *
 
-def hashmapadd(cube, cubecounter, movecounter):
-    keyinitialize = str(cubecounter) + "&" + str(movecounter)
-    Hashmap.MovementHashmap[keyinitialize] = cube
-    movecounter += movecounter;
-    return cubecounter, movecounter
 
-def hashmapaccess(cubecounter, movecounter):
-    return Hashmap.MovementHashmapp[str(cubecounter) + "&" + str(movecounter)]
-
-def hashmapprint():
-    for key in Hashmap.MovementHashmapp.items():
-        print(f"{key}")
 
 # This is where our Heuristic for how close the cube is to be solved will go
 def heuristic(cube):
@@ -294,8 +283,9 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
 # This will take the starting cube input into the function and try to solve using A* Search Algorithm
 def a_star_search(startCube, goalCube, movelist):
     open_list = []
-    closed_set = set()
-    
+    #closed_set = set()
+    closed_set = Hashmap()
+
     start_node = Node(startCube, g=0, h=heuristic(startCube))
     heapq.heappush(open_list, start_node)
 
@@ -308,7 +298,9 @@ def a_star_search(startCube, goalCube, movelist):
             return reconstruct_path(current)
 
         # Adds last visited node to set to refer back to
-        closed_set.add(current)
+        #closed_set.add(current)
+        closed_set.hashmapadd(current.cube, )
+
         # Generate new neighbors for every possible move that has not been visited
         for move in movelist:
             applyMovement(current.cube, move, get_path_from_movement(current.cube, move))
@@ -316,7 +308,7 @@ def a_star_search(startCube, goalCube, movelist):
             neighbor = Node(new_cube, g=current.g + 1, h=heuristic(new_cube), parent=current)
             print("Generated neighbor:\n")
 
-            if neighbor in closed_set:
+            if neighbor in :
                 print("Generated an already existing neighbor, skipping\n")
                 continue
         

@@ -34,20 +34,21 @@ class Cube:
                 self.Right.facevalue == other.Right.facevalue and
                 self.Up.facevalue    == other.Up.facevalue    and
                 self.Down.facevalue  == other.Down.facevalue)
+    '''
     def __hash__(self):
-        def __hash__(self):
         #Hash based on faces so Cube can be used in sets/dicts.
 
         #Note: I have no clue how this section works and it is for testing purposes only to ensure
         # Cube class will hash properly
-            return hash((
-                tuple(map(tuple, self.Front.facevalue)),
-                tuple(map(tuple, self.Back.facevalue)),
-                tuple(map(tuple, self.Left.facevalue)),
-                tuple(map(tuple, self.Right.facevalue)),
-                tuple(map(tuple, self.Up.facevalue)),
-                tuple(map(tuple, self.Down.facevalue))
-            ))
+       return hash((
+            tuple(map(tuple, self.Front.facevalue)),
+            tuple(map(tuple, self.Back.facevalue)),
+            tuple(map(tuple, self.Left.facevalue)),
+            tuple(map(tuple, self.Right.facevalue)),
+            tuple(map(tuple, self.Up.facevalue)),
+            tuple(map(tuple, self.Down.facevalue))
+        ))
+   '''
 # Class Movement
 class Movement:
     '''
@@ -83,6 +84,22 @@ class Node:
     def __lt__(self, other): # Defines less than function for Node objects (Makes priority queue work)
         return self.f < other.f
 
+    #def __hash__(self):
+      #  return hash(self.cube)
+
 class Hashmap:
     def __init__(self):
         self.MovementHashmap = dict()
+
+    def hashmapadd(cube, cubecounter, movecounter):
+        keyinitialize = str(cubecounter) + "&" + str(movecounter)
+        Hashmap.MovementHashmap[keyinitialize] = cube
+        movecounter += 1;
+        return cubecounter, movecounter
+
+    def hashmapaccess(cubecounter, movecounter):
+        return Hashmap.MovementHashmapp[str(cubecounter) + "&" + str(movecounter)]
+
+    def hashmapprint():
+        for key in Hashmap.MovementHashmapp.items():
+            print(f"{key}")
