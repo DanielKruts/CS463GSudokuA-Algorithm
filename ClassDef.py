@@ -89,17 +89,17 @@ class Node:
 
 class Hashmap:
     def __init__(self):
-        self.MovementHashmap = dict()
+        self.MovementHashmap = {}
 
-    def hashmapadd(cube, cubecounter, movecounter):
-        keyinitialize = str(cubecounter) + "&" + str(movecounter)
-        Hashmap.MovementHashmap[keyinitialize] = cube
-        movecounter += 1;
+    def hashmapadd(self, cube, cubecounter, movecounter):
+        keyinitialize = f"{cubecounter}&{movecounter}"
+        self.MovementHashmap[keyinitialize] = cube
+        movecounter += 1
         return cubecounter, movecounter
 
-    def hashmapaccess(cubecounter, movecounter):
-        return Hashmap.MovementHashmapp[str(cubecounter) + "&" + str(movecounter)]
+    def hashmapaccess(self, cubecounter, movecounter):
+        return self.MovementHashmap[f"{cubecounter}&{movecounter}"]
 
-    def hashmapprint():
-        for key in Hashmap.MovementHashmapp.items():
-            print(f"{key}")
+    def hashmapprint(self):
+        for key in self.MovementHashmap:
+            print(key)

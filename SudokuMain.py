@@ -55,12 +55,13 @@ def initializefunction():
 
     return movelist, cubeArray, goalCube
 
+from AStarAlgorithm import *
+from ClassDef import *
 import random
 import numpy as np
 import math
 import copy
-from AStarAlgorithm import *
-from ClassDef import *
+
 
 movelist,cubeArray,goalCube = initializefunction()
 newmove = 1

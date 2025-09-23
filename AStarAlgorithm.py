@@ -307,8 +307,8 @@ def a_star_search(startCube, goalCube, movelist):
             new_cube = copy.deepcopy(current.cube)
             neighbor = Node(new_cube, g=current.g + 1, h=heuristic(new_cube), parent=current)
             print("Generated neighbor:\n")
-
-            if neighbor in :
+            
+            if neighbor in closed_list:
                 print("Generated an already existing neighbor, skipping\n")
                 continue
         
