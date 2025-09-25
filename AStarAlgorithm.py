@@ -140,10 +140,10 @@ def move(movement, path):
             if movement.position == 0: # Top row
                 temp = path[0].facevalue[0][:]
                 if movement.direction == 0: # Clockwise
-                    path[0].facevalue[0][:] = path[3].facevalue[0][:]
-                    path[3].facevalue[0][:] = path[2].facevalue[0][:]
-                    path[2].facevalue[0][:] = path[1].facevalue[0][:]
-                    path[1].facevalue[0][:] = temp
+                    path[0].facevalue[0][:] = path[1].facevalue[0][:]
+                    path[1].facevalue[0][:] = path[2].facevalue[0][:]
+                    path[2].facevalue[0][:] = path[3].facevalue[0][:]
+                    path[3].facevalue[0][:] = temp
                 elif movement.direction == 1: # Counterclockwise
                     path[0].facevalue[0][:] = path[3].facevalue[0][:]
                     path[3].facevalue[0][:] = path[2].facevalue[0][:]
@@ -152,15 +152,15 @@ def move(movement, path):
             elif movement.position == 2: # Bottom row
                 temp = path[0].facevalue[2][:]
                 if movement.direction == 0: # Counterclockwise
-                    path[0].facevalue[2][:] = path[3].facevalue[2][:]
-                    path[3].facevalue[2][:] = path[2].facevalue[2][:]
-                    path[2].facevalue[2][:] = path[1].facevalue[2][:]
-                    path[1].facevalue[2][:] = temp
-                elif movement.direction == 1: # Clockwise
                     path[0].facevalue[2][:] = path[1].facevalue[2][:]
                     path[1].facevalue[2][:] = path[2].facevalue[2][:]
                     path[2].facevalue[2][:] = path[3].facevalue[2][:]
                     path[3].facevalue[2][:] = temp
+                elif movement.direction == 1: # Clockwise
+                    path[0].facevalue[2][:] = path[3].facevalue[2][:]
+                    path[3].facevalue[2][:] = path[2].facevalue[2][:]
+                    path[2].facevalue[2][:] = path[1].facevalue[2][:]
+                    path[1].facevalue[2][:] = temp
         elif movement.colRow == "C": # Column move
             if movement.position == 0: # Left column
                 temp = [row[0] for row in path[0].facevalue]
@@ -173,18 +173,18 @@ def move(movement, path):
                         path[2].facevalue[i][2] = path[3].facevalue[2-i][0]
                     for i in range(3):
                         path[3].facevalue[i][0] = temp[i]
-                elif movement.direction == 1: #Up
+                elif movement.direction == 1: # Up
                         for i in range(3):    
                             path[0].facevalue[i][0] = path[3].facevalue[i][0]
                         for i in range(3):    
                             path[3].facevalue[i][0] = path[2].facevalue[2-i][2]
                         for i in range(3):
-                            path[2].facevalue[i][2] = path[1].facevalue[2-i][0]
+                            path[2].facevalue[i][2] = path[1].facevalue[i][0]
                         for i in range(3):
                             path[1].facevalue[i][0] = temp[i]
             elif movement.position == 2: # Right column
                 temp = [row[2] for row in path[0].facevalue]
-                if movement.direction == 0: # Down
+                if movement.direction == 0: # Down  
                     for i in range(3):
                         path[0].facevalue[i][2] = path[1].facevalue[i][2]
                     for i in range(3):
@@ -205,7 +205,16 @@ def move(movement, path):
     elif movement.face == "Left":
         if movement.position == 0: #Left column
             temp = [row[0] for row in path[0].facevalue]
-            if movement.direction == 0: # Down
+            if movement.direction == 0: # Up
+                for i in range(3):
+                    path[0].facevalue[i][0] = path[3].facevalue[2][i]
+                for i in range(3):
+                    path[3].facevalue[2][2-i] = path[2].facevalue[i][2]
+                for i in range(3):
+                    path[2].facevalue[i][2] = path[1].facevalue[0][i]
+                for i in range(3):
+                    path[1].facevalue[0][i] = temp[2-i]
+            elif movement.direction == 1: # Down
                 for i in range(3):
                     path[0].facevalue[2-i][0] = path[1].facevalue[0][i]
                 for i in range(3):
@@ -214,15 +223,6 @@ def move(movement, path):
                     path[2].facevalue[i][2] = path[3].facevalue[2][2-i]
                 for i in range(3):
                     path[3].facevalue[2][i] = temp[i]
-            elif movement.direction == 1: # Up
-                for i in range(3):
-                    path[0].facevalue[i][0] = path[3].facevalue[2][i]
-                for i in range(3):
-                    path[3].facevalue[2][2-i] = path[2].facevalue[i][2]
-                for i in range(3):
-                    path[2].facevalue[i][2] = path[1].facevalue[0][2-i]
-                for i in range(3):
-                    path[1].facevalue[0][i] = temp[i]
         elif movement.position == 2: #Right column
             temp = [row[2] for row in path[0].facevalue]
             if movement.direction == 0: # Down
@@ -242,7 +242,7 @@ def move(movement, path):
                 for i in range(3):
                     path[2].facevalue[i][0] = path[1].facevalue[2][i]
                 for i in range(3):
-                    path[1].facevalue[0][i] = temp[2-i]
+                    path[1].facevalue[2][i] = temp[2-i]
 def printCube(cubeObject):
     # Takes a looper iterating through the desired values of the sides of the cube and prints them in a readable format
     for i in [cubeObject.Up]:
@@ -261,7 +261,7 @@ def printCube(cubeObject):
          print(f"\t {i.facevalue[0]}\n\t {i.facevalue[1]}\n\t {i.facevalue[2]}")
     print("")
 
-def randomizer(movelist, movevalue, previous_var, cubeObject, goalCube):
+def randomizer(movelist, movevalue, previous_var, cubeObject):
     print("Cube is: " + cubeObject.cubename)
     printCube(cubeObject)
     print("Applying random move")
@@ -276,18 +276,20 @@ def randomizer(movelist, movevalue, previous_var, cubeObject, goalCube):
         #print("Path is", [side.centercolor for side in pathprint[0]], "with orientations", pathprint[1])
         applyMovement(movelist[random_var].cube, movechosen, pathprint)
 
-        a_star_search(item, goalCube, movelist)
         printCube(cubeObject)
         heuristic(cubeObject)
         previous_var = random_var
     return previous_var
 
 # This will take the starting cube input into the function and try to solve using A* Search Algorithm
-def a_star_search(startCube, goalCube, movelist):
+def a_star_search(startCube, movelist):
     open_list = []
-    #closed_set = set()
     closed_set = Hashmap()
 
+    movecounter = 0 
+    cubecounter = 0
+
+    # Initialize start node 
     start_node = Node(startCube, g=0, h=heuristic(startCube))
     heapq.heappush(open_list, start_node)
 
@@ -296,24 +298,25 @@ def a_star_search(startCube, goalCube, movelist):
         current = heapq.heappop(open_list)
 
         # We found the damn goal
-        if current.cube == goalCube:
+        if heuristic(current.cube) == 0:
             return reconstruct_path(current)
 
         # Adds last visited node to set to refer back to
         #closed_set.add(current)
-        closed_set.hashmapadd(current.cube, )
+        cubecounter, movecounter = closed_set.add(current.cube, cubecounter, movecounter)
 
         # Generate new neighbors for every possible move that has not been visited
         for move in movelist:
-            applyMovement(current.cube, move, get_path_from_movement(current.cube, move))
             new_cube = copy.deepcopy(current.cube)
+            applyMovement(new_cube, move, get_path_from_movement(new_cube, move))
             neighbor = Node(new_cube, g=current.g + 1, h=heuristic(new_cube), parent=current)
             print("Generated neighbor:\n")
             
-            if neighbor in closed_list:
-                print("Generated an already existing neighbor, skipping\n")
-                continue
+            if any(neighbor.cube == cube for cube in closed_set.MovementHashmap.values()):
+                print("Already visited this neighbor, skipping...\n")
+                continue # Skips visited states
         
+            print("New state created:\n")
             printCube(new_cube)
             heapq.heappush(open_list, neighbor)
 

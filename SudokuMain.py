@@ -42,10 +42,7 @@ def initializefunction():
 
     cube5 = copy.deepcopy(cube1)
     cube5.cubecounter = 5
-    cube5.cubename = "Clide"
-
-    # For the goal cube so we have an already solved cube object to compare to
-    goalCube = Cube(cubecounter = 0, cubename="GoalCube")
+    cube5.cubename = "Clyde"
 
     movelist = [FC00, FC01, FC10, FC11,
                 FR00, FR01, FR10, FR11,
@@ -53,7 +50,7 @@ def initializefunction():
 
     cubeArray = [cube1, cube2, cube3, cube4, cube5]
 
-    return movelist, cubeArray, goalCube
+    return movelist, cubeArray
 
 from AStarAlgorithm import *
 from ClassDef import *
@@ -63,7 +60,7 @@ import math
 import copy
 
 
-movelist,cubeArray,goalCube = initializefunction()
+movelist,cubeArray = initializefunction()
 newmove = 1
 previous_var = -1
 
@@ -76,7 +73,7 @@ while newmove == 1:
                     nummoves = int(input("How many moves would you like to apply (3-20 recommended):\n"))
                     if 1 <= nummoves <= 20:
                         for item in cubeArray:
-                            previous_var = randomizer(movelist, nummoves, previous_var, item, goalCube)
+                            previous_var = randomizer(movelist, nummoves, previous_var, item)
                             print("\n\n\n\n\n")
                         break
                     else:
@@ -88,3 +85,4 @@ while newmove == 1:
             newmove = 0
         case _:
             print("Invalid input, please re-enter.")
+
