@@ -26,7 +26,7 @@ def heuristic(cube):
         heuristicscores.append(missingvaluesface)
 
     heuristicevaluation = math.ceil(max(heuristicscores) / 3)
-    print(f"Heuristic evaluation of cube is {heuristicevaluation}")
+    #print(f"Heuristic evaluation of cube is {heuristicevaluation}")
     return heuristicevaluation
 
 
@@ -288,23 +288,21 @@ def a_star_search(startCube, movelist):
 
     movecounter = 0
     cubecounter = 0
-    g=0
 
     # Initialize start node 
-    start_node = Node(startCube, g, h=heuristic(startCube))
+    start_node = Node(startCube, g=0, h=heuristic(startCube))
     heapq.heappush(open_list, start_node)
 
     while open_list:
         # Current Node being visited
         current = heapq.heappop(open_list)
-        print("Visiting Node with h: ", current.h)
+        print("Visiting Node with f: ", current.f)
 
         # We found the damn goal
         if current.h == 0:
             print("Goal found!")
             return reconstruct_path(current)
 
-        g += 1
         # Adds last visited node to set to refer back to
         #closed_set.add(current)
         cubecounter, movecounter = closed_set.hashmapadd(current.cube, cubecounter, movecounter)
@@ -313,24 +311,30 @@ def a_star_search(startCube, movelist):
         for move in movelist:
             new_cube = copy.deepcopy(current.cube)
             applyMovement(new_cube, move, get_path_from_movement(new_cube, move))
-
             
             if any(new_cube == cube for cube in closed_set.MovementHashmap.values()):
                 print("Already visited this neighbor, skipping...\n")
                 continue # Skips to next iteration of for loop for movelist
 
-            neighbor = Node(new_cube, g, h=heuristic(new_cube), parent=current)
-            #print("Generated neighbor:\n")
+            neighbor = Node(new_cube, g=current.g+1, h=heuristic(new_cube), parent=current)
+            print("Heuristic of node(h): " + str(neighbor.h) + "Depth of node(g): " + str(neighbor.g))    
+
             
             if neighbor.h == 0:
                 print("Goal found!\n")
+                print("f value of neighbor: ", neighbor.f)
                 return reconstruct_path(neighbor)
-        
+
+            
+            if (neighbor.cube in open_list) and (neighbor.f >= current.f):
+                print("This is not a better solution")
+                continue # Don't add the cube to the priority queue, one with a lesser f value is in the priority queue
+            
             cubecounter, movecounter = closed_set.hashmapadd(new_cube, cubecounter, movecounter)
 
+            print("f value of neighbor is: ", neighbor.f)
             print("Number of nodes computed: ", movecounter, "\n")
 
-            #print("New state created:\n")
             heapq.heappush(open_list, neighbor)
 
     print("No path found!")

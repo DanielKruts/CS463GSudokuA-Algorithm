@@ -55,7 +55,7 @@ class Movement:
 class Node:
     # Initialization takes a cube object, heuristic value, cost to reach node, and parent node(Another cube object)
     def __init__(self, cube, g=0, h=0, parent=None):
-        self.cube = copy.deepcopy(cube) # State of Cube
+        self.cube = cube # State of Cube
         self.parent = parent # Parent Node
         self.g = g # Cost to reach node
         self.h = h  # Heuristic(cube)
