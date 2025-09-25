@@ -26,8 +26,6 @@ class Cube:
         self.cubecounter = cubecounter
         self.cubename = cubename
     def __eq__(self, other):
-        if not isinstance(other, Cube):
-            return False
         return (self.Front.facevalue == other.Front.facevalue and
                 self.Back.facevalue  == other.Back.facevalue  and
                 self.Left.facevalue  == other.Left.facevalue  and
@@ -67,7 +65,7 @@ class Node:
         return self.cube == other.cube
 
     def __lt__(self, other): # Defines less than function for Node objects (Makes priority queue work)
-        return self.h < other.h
+        return self.f,self.h < other.f,other.h
 
 class Hashmap:
     def __init__(self):

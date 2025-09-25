@@ -58,6 +58,7 @@ import random
 import numpy as np
 import math
 import copy
+import time
 
 
 movelist,cubeArray = initializefunction()
@@ -86,7 +87,11 @@ while newmove == 1:
         case _:
             print("Invalid input, please re-enter.")
 
+start_time = time.perf_counter()
 goal_path = a_star_search(cubeArray[0], movelist)
+end_time = time.perf_counter()
 
+elapsed_time = end_time - start_time
+print("Elapsed amount of time for A_Star was: ", elapsed_time)
 for cube in goal_path:
     printCube(cube)

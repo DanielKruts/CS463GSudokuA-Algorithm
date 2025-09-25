@@ -296,6 +296,7 @@ def a_star_search(startCube, movelist):
     while open_list:
         # Current Node being visited
         current = heapq.heappop(open_list)
+        print("Visiting Node with h:", current.h)
 
         # We found the damn goal
         if heuristic(current.cube) == 0:
@@ -310,9 +311,14 @@ def a_star_search(startCube, movelist):
         for move in movelist:
             new_cube = copy.deepcopy(current.cube)
             applyMovement(new_cube, move, get_path_from_movement(new_cube, move))
+
             neighbor = Node(new_cube, g=current.g + 1, h=heuristic(new_cube), parent=current)
             print("Generated neighbor:\n")
             
+            if heuristic(neighbor.cube) == 0:
+                print("Goal found!")
+                return reconstruct_path(neighbor)
+
             if any(neighbor.cube == cube for cube in closed_set.MovementHashmap.values()):
                 print("Already visited this neighbor, skipping...\n")
                 continue # Skips visited states
