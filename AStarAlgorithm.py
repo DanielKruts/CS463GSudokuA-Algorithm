@@ -286,7 +286,7 @@ def a_star_search(startCube, movelist):
     open_list = []
     closed_set = Hashmap()
 
-    movecounter = 0 
+    movecounter = 0
     cubecounter = 0
 
     # Initialize start node 
@@ -299,11 +299,12 @@ def a_star_search(startCube, movelist):
 
         # We found the damn goal
         if heuristic(current.cube) == 0:
+            print("Goal found!")
             return reconstruct_path(current)
 
         # Adds last visited node to set to refer back to
         #closed_set.add(current)
-        cubecounter, movecounter = closed_set.add(current.cube, cubecounter, movecounter)
+        cubecounter, movecounter = closed_set.hashmapadd(current.cube, cubecounter, movecounter)
 
         # Generate new neighbors for every possible move that has not been visited
         for move in movelist:
@@ -316,14 +317,15 @@ def a_star_search(startCube, movelist):
                 print("Already visited this neighbor, skipping...\n")
                 continue # Skips visited states
         
+            cubecounter, movecounter = closed_set.hashmapadd(new_cube, cubecounter, movecounter)
+
             print("New state created:\n")
-            printCube(new_cube)
             heapq.heappush(open_list, neighbor)
 
     print("No path found!")
     return None
 
-# Returns the path from start to goal by tracing parnt nodes
+# Returns the path from start to goal by tracing parent nodes
 def reconstruct_path(node):
     path = []
     while node is not None:

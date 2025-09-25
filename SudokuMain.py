@@ -86,3 +86,7 @@ while newmove == 1:
         case _:
             print("Invalid input, please re-enter.")
 
+goal_path = a_star_search(cubeArray[0], movelist)
+
+for cube in goal_path:
+    printCube(cube)
