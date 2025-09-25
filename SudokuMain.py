@@ -92,6 +92,6 @@ goal_path = a_star_search(cubeArray[0], movelist)
 end_time = time.perf_counter()
 
 elapsed_time = end_time - start_time
-print("Elapsed amount of time for A_Star was: ", elapsed_time)
+print("Elapsed amount of time for A_Star was: ", elapsed_time, "\nNumber of cubes in path: ", len(goal_path))
 for cube in goal_path:
     printCube(cube)
