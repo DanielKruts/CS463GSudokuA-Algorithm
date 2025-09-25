@@ -285,6 +285,7 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
 def a_star_search(startCube, movelist):
     open_list = []
     closed_set = Hashmap()
+    g_scores = {}
 
     movecounter = 0
     cubecounter = 0
@@ -292,6 +293,7 @@ def a_star_search(startCube, movelist):
     # Initialize start node 
     start_node = Node(startCube, g=0, h=heuristic(startCube))
     heapq.heappush(open_list, start_node)
+    g_scores[start_node.cube] = 0 # Dictionary to keep track of the best g scores found for cube states
 
     while open_list:
         # Current Node being visited
@@ -311,7 +313,12 @@ def a_star_search(startCube, movelist):
         for move in movelist:
             new_cube = copy.deepcopy(current.cube)
             applyMovement(new_cube, move, get_path_from_movement(new_cube, move))
-            
+            potential_g = current.g+1 # Tracks the next g value (depth), to ensure the next cube we add is not the same cube with a lesser g value
+
+            if new_cube in g_scores and potential_g >= g_scores[new_cube]:
+                print("Not a better path, skipping...\n")
+                continue
+
             if any(new_cube == cube for cube in closed_set.MovementHashmap.values()):
                 print("Already visited this neighbor, skipping...\n")
                 continue # Skips to next iteration of for loop for movelist
@@ -319,17 +326,14 @@ def a_star_search(startCube, movelist):
             neighbor = Node(new_cube, g=current.g+1, h=heuristic(new_cube), parent=current)
             print("Heuristic of node(h): " + str(neighbor.h) + "Depth of node(g): " + str(neighbor.g))    
 
-            
+            '''
             if neighbor.h == 0:
                 print("Goal found!\n")
                 print("f value of neighbor: ", neighbor.f)
                 return reconstruct_path(neighbor)
-
+            '''
             
-            if (neighbor.cube in open_list) and (neighbor.f >= current.f):
-                print("This is not a better solution")
-                continue # Don't add the cube to the priority queue, one with a lesser f value is in the priority queue
-            
+            g_scores[new_cube] = potential_g
             cubecounter, movecounter = closed_set.hashmapadd(new_cube, cubecounter, movecounter)
 
             print("f value of neighbor is: ", neighbor.f)

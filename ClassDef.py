@@ -32,6 +32,16 @@ class Cube:
                 self.Right.facevalue == other.Right.facevalue and
                 self.Up.facevalue    == other.Up.facevalue    and
                 self.Down.facevalue  == other.Down.facevalue)
+
+    def __hash__(self):
+        return hash((
+        tuple(map(tuple, self.Front.facevalue)),
+        tuple(map(tuple, self.Back.facevalue)),
+        tuple(map(tuple, self.Left.facevalue)),
+        tuple(map(tuple, self.Right.facevalue)),
+        tuple(map(tuple, self.Up.facevalue)),
+        tuple(map(tuple, self.Down.facevalue))
+        ))
 # Class Movement
 class Movement:
     '''
