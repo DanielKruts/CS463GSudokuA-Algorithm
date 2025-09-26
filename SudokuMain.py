@@ -8,7 +8,7 @@
 # Initializes our objects that are needed for the functions to run properly
 def initializefunction():
     
-    cube1 = Cube(cubecounter = 1, cubename = "Pacman")
+    cube1 = Cube(cubecounter = 0, cubename = "Pacman")
 
     FC00 = Movement(cube1, face="Front", colrow="C", position=0, direction=0, name="FC00")
     FC01 = Movement(cube1, face="Front", colrow="C", position=0, direction=1, name="FC01")
@@ -27,21 +27,21 @@ def initializefunction():
 
 
     cube2 = copy.deepcopy(cube1)
-    cube2.cubecounter = 2
+    cube2.cubecounter = 1
     cube2.cubename = "Blinky"
 
     cube3 = copy.deepcopy(cube1)
-    cube3.cubecounter = 3
+    cube3.cubecounter = 2
     cube3.cubename = "Pinky"
 
 
     cube4 = copy.deepcopy(cube1)
-    cube4.cubecounter = 4
+    cube4.cubecounter = 3
     cube4.cubename = "Inky"
 
 
     cube5 = copy.deepcopy(cube1)
-    cube5.cubecounter = 5
+    cube5.cubecounter = 4
     cube5.cubename = "Clyde"
 
     movelist = [FC00, FC01, FC10, FC11,
@@ -92,15 +92,20 @@ while newmove == 1:
             newmove = 0
         case _:
             print("Invalid input, please re-enter.")
+elapsed_time = np.zeros(len(cubeArray))
+goal_path = np.empty(len(cubeArray), dtype=Cube)
 
 if repeatrandomization == 1:
-    start_time = time.perf_counter()
-    goal_path = a_star_search(cubeArray[0], movelist)
-    end_time = time.perf_counter()
+    for item in cubeArray:
 
-    elapsed_time = end_time - start_time
-    print("Elapsed amount of time for A_Star was: ", elapsed_time, "\nNumber of moves applied: ", (len(goal_path) - 1))
-    for cube in goal_path:
-        printCube(cube)
+        start_time = time.perf_counter()
+        goal_path[item.cubecounter] = a_star_search(item, movelist)
+        end_time = time.perf_counter()
+
+        elapsed_time[item.cubecounter] = end_time - start_time
+    for item in cubeArray:
+        print("Time to solve cube %s was: %.4f seconds. Number of moves applied: %d" % (item.cubename, elapsed_time[item.cubecounter], (len(goal_path[item.cubecounter]) - 1)))
+        for cube in goal_path[item.cubecounter]:
+            printCube(cube)
 else:
     print("No moves were applied, exiting program.")
