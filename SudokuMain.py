@@ -78,7 +78,7 @@ while newmove == 1:
             while True:
                 try:
                     nummoves = int(input("How many moves would you like to apply (3-20 recommended):\n"))
-                    if 1 <= nummoves <= 20:
+                    if 3 <= nummoves <= 20:
                         for item in cubeArray:
                             previous_var = randomizer(movelist, nummoves, previous_var, item)
                             print("\n\n\n\n\n")
@@ -99,7 +99,7 @@ if repeatrandomization == 1:
     for item in cubeArray:
 
         start_time = time.perf_counter()
-        goal_path[item.cubecounter] = a_star_search(item, movelist)
+        goal_path[item.cubecounter] = a_star_search(item, movelist, nummoves)
         end_time = time.perf_counter()
 
         elapsed_time[item.cubecounter] = end_time - start_time

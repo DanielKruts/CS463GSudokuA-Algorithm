@@ -164,7 +164,7 @@ def move(movement, path):
         elif movement.colRow == "C": # Column move
             if movement.position == 0: # Left column
                 temp = [row[0] for row in path[0].facevalue]
-                if movement.direction == 0: # Down
+                if movement.direction == 0: # Up
                     for i in range(3):
                         path[0].facevalue[i][0] = path[1].facevalue[i][0]
                     for i in range(3):
@@ -173,13 +173,13 @@ def move(movement, path):
                         path[2].facevalue[i][2] = path[3].facevalue[2-i][0]
                     for i in range(3):
                         path[3].facevalue[i][0] = temp[i]
-                elif movement.direction == 1: # Up
+                elif movement.direction == 1: # Down
                         for i in range(3):    
                             path[0].facevalue[i][0] = path[3].facevalue[i][0]
                         for i in range(3):    
                             path[3].facevalue[i][0] = path[2].facevalue[2-i][2]
                         for i in range(3):
-                            path[2].facevalue[i][2] = path[1].facevalue[i][0]
+                            path[2].facevalue[i][2] = path[1].facevalue[2-i][0]
                         for i in range(3):
                             path[1].facevalue[i][0] = temp[i]
             elif movement.position == 2: # Right column
@@ -207,15 +207,6 @@ def move(movement, path):
             temp = [row[0] for row in path[0].facevalue]
             if movement.direction == 0: # Up
                 for i in range(3):
-                    path[0].facevalue[i][0] = path[3].facevalue[2][i]
-                for i in range(3):
-                    path[3].facevalue[2][2-i] = path[2].facevalue[i][2]
-                for i in range(3):
-                    path[2].facevalue[i][2] = path[1].facevalue[0][i]
-                for i in range(3):
-                    path[1].facevalue[0][i] = temp[2-i]
-            elif movement.direction == 1: # Down
-                for i in range(3):
                     path[0].facevalue[2-i][0] = path[1].facevalue[0][i]
                 for i in range(3):
                     path[1].facevalue[0][i] = path[2].facevalue[i][2]
@@ -223,7 +214,16 @@ def move(movement, path):
                     path[2].facevalue[i][2] = path[3].facevalue[2][2-i]
                 for i in range(3):
                     path[3].facevalue[2][i] = temp[i]
-        elif movement.position == 2: #Right column
+            elif movement.direction == 1: # Down
+                for i in range(3):
+                    path[0].facevalue[i][0] = path[3].facevalue[2][i]
+                for i in range(3):
+                    path[3].facevalue[2][2-i] = path[2].facevalue[i][2]
+                for i in range(3):
+                    path[2].facevalue[i][2] = path[1].facevalue[0][i]
+                for i in range(3):
+                    path[1].facevalue[0][i] = temp[2-i]
+        elif movement.position == 2: # Right column
             temp = [row[2] for row in path[0].facevalue]
             if movement.direction == 0: # Down
                 for i in range(3):
@@ -280,7 +280,7 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
     return previous_var
 
 # This will take the starting cube input into the function and try to solve using A* Search Algorithm
-def a_star_search(startCube, movelist):
+def a_star_search(startCube, movelist, nummoves):
     open_heap = []                      # will contain tuples (f, counter, node)
     closed_set = set()                  # stores cube_key(...) of expanded nodes
     g_scores = {}                       # maps cube_key -> g
@@ -292,12 +292,12 @@ def a_star_search(startCube, movelist):
     start_node = Node(startCube, g=0, h=start_h)
     start_node.f = start_node.g + start_node.h
 
-    heapq.heappush(open_heap, (start_node.f, counter, start_node))
+    heapq.heappush(open_heap, start_node)
     counter += 1
     g_scores[startCube] = 0
 
     while open_heap:
-        current_f, _, current = heapq.heappop(open_heap)
+        current = heapq.heappop(open_heap)
         current_key = current.cube
         print("Visiting Node with h:", current.h, " g:", current.g, " f:", current.f)
 
@@ -321,11 +321,11 @@ def a_star_search(startCube, movelist):
             applyMovement(new_cube, move, get_path_from_movement(new_cube, move))
             child_key = new_cube
             tentative_g = current.g + 1
-
+            '''
             # If child already expanded, skip it
             if child_key in closed_set:
                 continue
-
+            '''
             # If we have a better or equal g already recorded, skip
             if child_key in g_scores and tentative_g >= g_scores[child_key]:
                 # Not a better path
@@ -334,18 +334,17 @@ def a_star_search(startCube, movelist):
             # Otherwise it's a better path: create neighbor node
             child_h = heuristic(new_cube)
             neighbor = Node(new_cube, g=tentative_g, h=child_h, parent=current)
-            neighbor.f = neighbor.g + neighbor.h
-
+            '''
             # If goal:
             if neighbor.h == 0:
                 print("Goal found!\n")
                 return reconstruct_path(neighbor), len(open_heap)
-
+            '''
             # Record best g so far
             g_scores[child_key] = tentative_g
 
             # push to heap with tie-breaker counter
-            heapq.heappush(open_heap, (neighbor.f, counter, neighbor))
+            heapq.heappush(open_heap, neighbor)
             counter += 1
 
             movecounter += 1
