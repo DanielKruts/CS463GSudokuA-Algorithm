@@ -281,64 +281,75 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
 
 # This will take the starting cube input into the function and try to solve using A* Search Algorithm
 def a_star_search(startCube, movelist):
-    open_list = []
-    closed_set = Hashmap()
-    g_scores = {}
+    open_heap = []                      # will contain tuples (f, counter, node)
+    closed_set = set()                  # stores cube_key(...) of expanded nodes
+    g_scores = {}                       # maps cube_key -> g
+    counter = 0                         # tie-breaker for heap
 
     movecounter = 0
-    cubecounter = 0
 
-    # Initialize start node 
-    start_node = Node(startCube, g=0, h=heuristic(startCube))
-    heapq.heappush(open_list, start_node)
-    g_scores[start_node.cube] = 0 # Dictionary to keep track of the best g scores found for cube states
+    start_h = heuristic(startCube)
+    start_node = Node(startCube, g=0, h=start_h)
+    start_node.f = start_node.g + start_node.h
 
-    while open_list:
-        # Current Node being visited
-        current = heapq.heappop(open_list)
-        #print("Visiting Node with f: ", current.f)
+    heapq.heappush(open_heap, (start_node.f, counter, start_node))
+    counter += 1
+    g_scores[startCube] = 0
 
-        # We found the damn goal
+    while open_heap:
+        current_f, _, current = heapq.heappop(open_heap)
+        current_key = current.cube
+        print("Visiting Node with h:", current.h, " g:", current.g, " f:", current.f)
+
+        # If already expanded (we may have a stale entry), skip
+        if current_key in closed_set:
+            # stale entry, skip
+            continue
+
+        # Goal test
         if current.h == 0:
             print("Goal found!")
             return reconstruct_path(current)
 
-        # Adds last visited node to set to refer back to
-        #closed_set.add(current)
-        cubecounter, movecounter = closed_set.hashmapadd(current.cube, cubecounter, movecounter)
+        # Mark current as expanded
+        closed_set.add(current_key)
 
-        # Generate new neighbors for every possible move that has not been visited
+        # Expand neighbors
         for move in movelist:
+            # create child cube and key
             new_cube = copy.deepcopy(current.cube)
             applyMovement(new_cube, move, get_path_from_movement(new_cube, move))
-            potential_g = current.g+1 # Tracks the next g value (depth), to ensure the next cube we add is not the same cube with a lesser g value
+            child_key = new_cube
+            tentative_g = current.g + 1
 
-            if new_cube in g_scores and potential_g >= g_scores[new_cube]:
-                #print("Not a better path, skipping...\n")
+            # If child already expanded, skip it
+            if child_key in closed_set:
                 continue
 
-            if any(new_cube == cube for cube in closed_set.MovementHashmap.values()):
-                #print("Already visited this neighbor, skipping...\n")
-                continue # Skips to next iteration of for loop for movelist
+            # If we have a better or equal g already recorded, skip
+            if child_key in g_scores and tentative_g >= g_scores[child_key]:
+                # Not a better path
+                continue
 
-            neighbor = Node(new_cube, g=current.g+1, h=heuristic(new_cube), parent=current)
-            print("Heuristic: " + str(neighbor.h) + " Depth: " + str(neighbor.g) +  
-                  " Node #: " + str(movecounter) + "\n")
+            # Otherwise it's a better path: create neighbor node
+            child_h = heuristic(new_cube)
+            neighbor = Node(new_cube, g=tentative_g, h=child_h, parent=current)
+            neighbor.f = neighbor.g + neighbor.h
 
-            '''
+            # If goal:
             if neighbor.h == 0:
                 print("Goal found!\n")
-                print("f value of neighbor: ", neighbor.f)
-                return reconstruct_path(neighbor)
-            '''
-            
-            g_scores[new_cube] = potential_g
-            cubecounter, movecounter = closed_set.hashmapadd(new_cube, cubecounter, movecounter)
+                return reconstruct_path(neighbor), len(open_heap)
 
-            #print("f value of neighbor is: ", neighbor.f)
-            #print("Number of nodes computed: ", movecounter, "\n")
+            # Record best g so far
+            g_scores[child_key] = tentative_g
 
-            heapq.heappush(open_list, neighbor)
+            # push to heap with tie-breaker counter
+            heapq.heappush(open_heap, (neighbor.f, counter, neighbor))
+            counter += 1
+
+            movecounter += 1
+            print("Heuristic:", neighbor.h, "Depth:", neighbor.g, "Node #:", movecounter)
 
     print("No path found!")
     return None
