@@ -17,6 +17,7 @@ class CubeSide:
 #Creates a cube with 6 predetermined sides of a solved cube
 class Cube:
     def __init__(self, cubecounter, cubename):
+
         self.Front = CubeSide([[9, 5, 2], [3, 8, 1], [6, 7, 4]], 'Y')
         self.Back = CubeSide([[9, 5, 2], [3, 8, 1], [6, 7, 4]], 'P')
         self.Left = CubeSide([[7, 1, 8], [2, 4, 6], [9, 3, 5]], 'B')
@@ -25,6 +26,8 @@ class Cube:
         self.Down = CubeSide([[1, 2, 8], [5, 3, 9], [7, 4, 6]], 'R')
         self.cubecounter = cubecounter
         self.cubename = cubename
+        
+        
     def __eq__(self, other):
         return (self.Front.facevalue == other.Front.facevalue and
                 self.Back.facevalue  == other.Back.facevalue  and

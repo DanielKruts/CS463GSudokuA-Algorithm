@@ -64,11 +64,17 @@ import time
 movelist,cubeArray = initializefunction()
 newmove = 1
 previous_var = -1
+repeatrandomization = 0
+
 
 while newmove == 1:
-    user_input = input("Would you like to complete a move? Y/N:\n")
+    if repeatrandomization == 0:
+        user_input = input("Would you like to complete a move? Y/N:\n")
+    else:
+        user_input = input("Would you like to randomize even more? Y/N:\n")
     match user_input:
         case "Y" | "y":
+            repeatrandomization = 1
             while True:
                 try:
                     nummoves = int(input("How many moves would you like to apply (3-20 recommended):\n"))
@@ -76,22 +82,25 @@ while newmove == 1:
                         for item in cubeArray:
                             previous_var = randomizer(movelist, nummoves, previous_var, item)
                             print("\n\n\n\n\n")
+                            
                         break
                     else:
                         print("Please enter a number between 3 and 20.")
                 except ValueError:
                     print("Invalid input, please enter a number.")
         case "N" | "n":
-            print("Exiting movements.")
             newmove = 0
         case _:
             print("Invalid input, please re-enter.")
 
-start_time = time.perf_counter()
-goal_path = a_star_search(cubeArray[0], movelist)
-end_time = time.perf_counter()
+if repeatrandomization == 1:
+    start_time = time.perf_counter()
+    goal_path = a_star_search(cubeArray[0], movelist)
+    end_time = time.perf_counter()
 
-elapsed_time = end_time - start_time
-print("Elapsed amount of time for A_Star was: ", elapsed_time, "\nNumber of cubes in path: ", len(goal_path))
-for cube in goal_path:
-    printCube(cube)
+    elapsed_time = end_time - start_time
+    print("Elapsed amount of time for A_Star was: ", elapsed_time, "\nNumber of moves applied: ", (len(goal_path) - 1))
+    for cube in goal_path:
+        printCube(cube)
+else:
+    print("No moves were applied, exiting program.")

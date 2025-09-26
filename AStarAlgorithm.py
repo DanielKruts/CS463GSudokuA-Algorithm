@@ -42,7 +42,7 @@ def applyMovement(newCube, movement, path):
 
 # Takes a given Cube, Movement, and path to rotate the appropriate face and apply the correct column move
 def applyColumnMove(cube, movement, path):
-    print("Movement Code:", movement.name, "| face:", movement.face, "| col/row:", movement.colRow, "| position:", movement.position, "| direction:", movement.direction)
+    print("Cube name:", cube.cubename, "| Move code:", movement.name, "| face:", movement.face, "| col/row:", movement.colRow, "| pos:", movement.position, "| dir:", movement.direction)
     if movement.face == "Front":
         if movement.position == 0:  # Left column
             if movement.direction == 0:  # Down
@@ -79,7 +79,7 @@ def applyColumnMove(cube, movement, path):
 
 # Takes the given Cube, Movement, and path to correctly rotate the appropriate face and apply the correct row move
 def applyRowMove(cube, movement, path):
-    print("Movement Code:", movement.name, "| face:", movement.face, "| col/row:", movement.colRow, "| position:", movement.position, "| direction:", movement.direction)
+    print("Cube name:", cube.cubename, "| Move code:", movement.name, "| face:", movement.face, "| col/row:", movement.colRow, "| pos:", movement.position, "| dir:", movement.direction)
     if movement.face == "Front":
         if movement.position == 0:  # Top row
             if movement.direction == 0:  # Left
@@ -262,14 +262,12 @@ def printCube(cubeObject):
     print("")
 
 def randomizer(movelist, movevalue, previous_var, cubeObject):
-    print("Cube is: " + cubeObject.cubename)
     printCube(cubeObject)
-    print("Applying random move")
-    print("Move value is", movevalue)
+    print("Applying random move(s)")
     for i in range(0, movevalue):
         random_var = random.randint(0, 11)
         while random_var == previous_var:
-            print("Same move as last time, rerolling")
+            print("Repeat move, rerolling")
             random_var = random.randint(0, 11)
         movechosen = movelist[random_var]
         pathprint = get_path_from_movement(cubeObject, movechosen)
@@ -298,7 +296,7 @@ def a_star_search(startCube, movelist):
     while open_list:
         # Current Node being visited
         current = heapq.heappop(open_list)
-        print("Visiting Node with f: ", current.f)
+        #print("Visiting Node with f: ", current.f)
 
         # We found the damn goal
         if current.h == 0:
@@ -316,15 +314,16 @@ def a_star_search(startCube, movelist):
             potential_g = current.g+1 # Tracks the next g value (depth), to ensure the next cube we add is not the same cube with a lesser g value
 
             if new_cube in g_scores and potential_g >= g_scores[new_cube]:
-                print("Not a better path, skipping...\n")
+                #print("Not a better path, skipping...\n")
                 continue
 
             if any(new_cube == cube for cube in closed_set.MovementHashmap.values()):
-                print("Already visited this neighbor, skipping...\n")
+                #print("Already visited this neighbor, skipping...\n")
                 continue # Skips to next iteration of for loop for movelist
 
             neighbor = Node(new_cube, g=current.g+1, h=heuristic(new_cube), parent=current)
-            print("Heuristic of node(h): " + str(neighbor.h) + "Depth of node(g): " + str(neighbor.g))    
+            print("Heuristic: " + str(neighbor.h) + " Depth: " + str(neighbor.g) +  
+                  " Node #: " + str(movecounter) + "\n")
 
             '''
             if neighbor.h == 0:
@@ -336,8 +335,8 @@ def a_star_search(startCube, movelist):
             g_scores[new_cube] = potential_g
             cubecounter, movecounter = closed_set.hashmapadd(new_cube, cubecounter, movecounter)
 
-            print("f value of neighbor is: ", neighbor.f)
-            print("Number of nodes computed: ", movecounter, "\n")
+            #print("f value of neighbor is: ", neighbor.f)
+            #print("Number of nodes computed: ", movecounter, "\n")
 
             heapq.heappush(open_list, neighbor)
 
