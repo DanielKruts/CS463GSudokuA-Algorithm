@@ -63,7 +63,7 @@ import time
 
 movelist,cubeArray = initializefunction()
 newmove = 1
-previous_var = -1
+previous_var = 12
 repeatrandomization = 0
 
 
@@ -100,6 +100,7 @@ if repeatrandomization == 1:
 
         start_time = time.perf_counter()
         goal_path[item.cubecounter] = a_star_search(item, movelist, nummoves)
+
         end_time = time.perf_counter()
 
         elapsed_time[item.cubecounter] = end_time - start_time

@@ -264,19 +264,19 @@ def printCube(cubeObject):
 def randomizer(movelist, movevalue, previous_var, cubeObject):
     printCube(cubeObject)
     print("Applying random move(s)")
+    inversemovechecker = [1,0,3,2,5,4,7,6,9,8,11,10,12] #Checks that the move applied (for example move #3) is not the inverse of the previous move
+    # Which for move #3 would be Move #2 (hence why the third element is 2)
     for i in range(0, movevalue):
-        random_var = random.randint(0, 11)
-        while random_var == previous_var:
-            print("Repeat move, rerolling")
-            random_var = random.randint(0, 11)
+        random_var = random.randint(0, 11) # pickes random variable
+        while random_var == inversemovechecker[previous_var]:
+            print("Inverse move, rerolling")
+            random_var = random.randint(0, 11) # if inverse of move, reroll
         movechosen = movelist[random_var]
         pathprint = get_path_from_movement(cubeObject, movechosen)
-        #print("Path is", [side.centercolor for side in pathprint[0]], "with orientations", pathprint[1])
-        applyMovement(cubeObject, movechosen, pathprint)
-
+        applyMovement(cubeObject, movechosen, pathprint) # apply movement, print cube + heuristic
         printCube(cubeObject)
         heuristic(cubeObject)
-        previous_var = random_var
+        previous_var = random_var # apply next movements previous movement to current movement
     return previous_var
 
 # This will take the starting cube input into the function and try to solve using A* Search Algorithm
