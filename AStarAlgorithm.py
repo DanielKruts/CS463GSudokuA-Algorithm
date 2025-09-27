@@ -333,12 +333,11 @@ def a_star_search(startCube, movelist, nummoves):
             # Otherwise it's a better path: create neighbor node
             child_h = heuristic(new_cube)
             neighbor = Node(new_cube, g=tentative_g, h=child_h, parent=current)
-            '''
             # If goal:
             if neighbor.h == 0:
                 print("Goal found!\n")
                 return reconstruct_path(neighbor), len(open_list)
-            '''
+          
             # Record best g so far
             g_scores[child_key] = tentative_g
 
