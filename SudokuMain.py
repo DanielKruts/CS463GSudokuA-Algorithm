@@ -78,7 +78,7 @@ while newmove == 1:
             while True:
                 try:
                     nummoves = int(input("How many moves would you like to apply (3-20 recommended):\n"))
-                    if 3 <= nummoves <= 20:
+                    if 1 <= nummoves <= 20:
                         for item in cubeArray:
                             previous_var = randomizer(movelist, nummoves, previous_var, item)
                             print("\n\n\n\n\n")
