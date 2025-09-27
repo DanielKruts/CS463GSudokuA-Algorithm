@@ -78,9 +78,11 @@ class Node:
         return self.cube == other.cube
 
     def __lt__(self, other): # Defines less than function for Node objects (Makes priority queue work)
-        if self.f == other.f:
-            return self.h <= other.h
-        return self.f < other.f
+        if self.f != other.f:
+            return self.f < other.f
+        if self.h != other.h:
+            return self.h < other.h
+        return self.g < other.g
 
 class Hashmap:
     def __init__(self):
