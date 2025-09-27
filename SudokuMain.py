@@ -111,5 +111,11 @@ if repeatrandomization == 1:
         print("Time to solve cube %s was: %.4f seconds. Number of moves applied: %d" % (item.cubename, elapsed_time[item.cubecounter], (len(goal_path[item.cubecounter]) - 1)))
         for cube in goal_path[item.cubecounter]:
             printCube(cube)
+    index = 0
+    for nodenum in length_of_queue:
+        print("Cube %s has %d nodes in the priority queue" % (cubeArray[index].cubename, nodenum))
+        index += 1
+    averagenodes = np.mean(length_of_queue)
+    print("The average number of nodes in the priorty queue is: %.2f" % averagenodes)
 else:
     print("No moves were applied, exiting program.")
