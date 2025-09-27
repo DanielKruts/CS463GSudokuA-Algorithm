@@ -100,7 +100,7 @@ if repeatrandomization == 1:
     for item in cubeArray:
 
         start_time = time.perf_counter()
-        goal_path[item.cubecounter] = a_star_search(item, movelist, nummoves)
+        goal_path[item.cubecounter],length_of_queue[item.cubecounter] = a_star_search(item, movelist, nummoves)
 
         end_time = time.perf_counter()
 
@@ -111,6 +111,5 @@ if repeatrandomization == 1:
         print("Time to solve cube %s was: %.4f seconds. Number of moves applied: %d" % (item.cubename, elapsed_time[item.cubecounter], (len(goal_path[item.cubecounter]) - 1)))
         for cube in goal_path[item.cubecounter]:
             printCube(cube)
-        print()
 else:
     print("No moves were applied, exiting program.")

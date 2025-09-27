@@ -246,8 +246,7 @@ def move(movement, path):
 def printCube(cubeObject):
     # Takes a looper iterating through the desired values of the sides of the cube and prints them in a readable format
     for i in [cubeObject.Up]:
-        print(f"\t {i.facevalue[0]}\n\t {i.facevalue[1]}\n\t {i.facevalue[2]}")
-    
+        print(f"\t {i.facevalue[0]}\n\t {i.facevalue[1]}\n\t {i.facevalue[2]}") 
     for i in [cubeObject.Left, cubeObject.Front, cubeObject.Right, cubeObject.Back]:
          print(i.facevalue[0], end="")
     print("")
