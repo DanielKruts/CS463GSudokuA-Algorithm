@@ -281,7 +281,7 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
 
 # This will take the starting cube input into the function and try to solve using A* Search Algorithm
 def a_star_search(startCube, movelist, nummoves):
-    open_heap = []                      # will contain tuples (f, counter, node)
+    open_list = []                      # will contain tuples (f, counter, node)
     closed_set = set()                  # stores cube_key(...) of expanded nodes
     g_scores = {}                       # maps cube_key -> g
     counter = 0                         # tie-breaker for heap
@@ -292,12 +292,12 @@ def a_star_search(startCube, movelist, nummoves):
     start_node = Node(startCube, g=0, h=start_h)
     start_node.f = start_node.g + start_node.h
 
-    heapq.heappush(open_heap, start_node)
+    heapq.heappush(open_list, start_node)
     counter += 1
     g_scores[startCube] = 0
 
-    while open_heap:
-        current = heapq.heappop(open_heap)
+    while open_list:
+        current = heapq.heappop(open_list)
         current_key = current.cube
         print("Visiting Node with h:", current.h, " g:", current.g, " f:", current.f)
 
@@ -309,14 +309,14 @@ def a_star_search(startCube, movelist, nummoves):
         # Goal test
         if current.h == 0:
             print("Goal found!")
-            return reconstruct_path(current)
+            return reconstruct_path(current), len(open_list)
 
         # Mark current as expanded
         closed_set.add(current_key)
 
         # Expand neighbors
         for move in movelist:
-            # create child cube and key
+            # create child cube and key 
             new_cube = copy.deepcopy(current.cube)
             applyMovement(new_cube, move, get_path_from_movement(new_cube, move))
             child_key = new_cube
@@ -338,13 +338,13 @@ def a_star_search(startCube, movelist, nummoves):
             # If goal:
             if neighbor.h == 0:
                 print("Goal found!\n")
-                return reconstruct_path(neighbor), len(open_heap)
+                return reconstruct_path(neighbor), len(open_list)
             '''
             # Record best g so far
             g_scores[child_key] = tentative_g
 
             # push to heap with tie-breaker counter
-            heapq.heappush(open_heap, neighbor)
+            heapq.heappush(open_list, neighbor)
             counter += 1
 
             movecounter += 1
