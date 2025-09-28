@@ -337,7 +337,7 @@ def a_star_search(startCube, movelist, nummoves):
             if neighbor.h == 0:
                 print("Goal found!\n")
                 return reconstruct_path(neighbor), len(open_list)
-          
+            
             # Record best g so far
             g_scores[child_key] = tentative_g
 
