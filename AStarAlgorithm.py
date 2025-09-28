@@ -280,12 +280,11 @@ def randomizer(movelist, movevalue, previous_var, cubeObject):
 
 # This will take the starting cube input into the function and try to solve using A* Search Algorithm
 def a_star_search(startCube, movelist, nummoves):
-    open_list = []                      # will contain tuples (f, counter, node)
-    closed_set = set()                  # stores cube_key(...) of expanded nodes
-    g_scores = {}                       # maps cube_key -> g
-    counter = 0                         # tie-breaker for heap
+    open_list = []                      # Contains tuple values of the nodes explored but not yet expanded
+    closed_set = set()                  # stores cube keys, which are the cubes themselves for the hash
+    g_scores = {}                       # maps cube -> best g found so far for that cube
 
-    movecounter = 0
+    movecounter = 0 # Number of moves made, or nodes created
 
     start_h = heuristic(startCube)
     start_node = Node(startCube, g=0, h=start_h)
