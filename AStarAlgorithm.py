@@ -21,12 +21,12 @@ def heuristic(cube):
     for side in [cube.Front, cube.Back, cube.Left, cube.Right, cube.Up, cube.Down]:
         heuristicface = np.array(side.facevalue)
         flat = heuristicface.flatten()
-        missingvaluesface = 9 - len(np.unique(flat))
+        missingvaluesface = 9 - len(np.unique(flat)) # counts how many unique values are missing from the face
 
-        heuristicscores.append(missingvaluesface)
+        heuristicscores.append(missingvaluesface) # adds the missing values to array
 
-    heuristicevaluation = math.ceil(max(heuristicscores) / 3)
-    #print(f"Heuristic evaluation of cube is {heuristicevaluation}")
+    heuristicevaluation = math.ceil(max(heuristicscores) / 3) 
+    # divides the max missing values by 3 and round up to get heuristic value (reason in report)
     return heuristicevaluation
 
 

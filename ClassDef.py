@@ -86,17 +86,17 @@ class Node:
 
 class Hashmap:
     def __init__(self):
-        self.MovementHashmap = {}
+        self.MovementHashmap = {} # Initializes an empty hashmap
 
     def hashmapadd(self, cube, cubecounter, movecounter):
-        keyinitialize = f"{cubecounter}&{movecounter}"
+        keyinitialize = f"{cubecounter}&{movecounter}" # Creates a unique key for the hashmap based on cube and move counters
         self.MovementHashmap[keyinitialize] = cube
-        movecounter += 1
+        movecounter += 1 # Increments move counter (to keep hashmap keys unique)
         return cubecounter, movecounter
 
     def hashmapaccess(self, cubecounter, movecounter):
-        return self.MovementHashmap[f"{cubecounter}&{movecounter}"]
+        return self.MovementHashmap[f"{cubecounter}&{movecounter}"] # Accesses a cube in the hashmap based on cube and move counters
 
     def hashmapprint(self):
-        for key in self.MovementHashmap:
+        for key in self.MovementHashmap: # Prints all keys in the hashmap (not used in final variation of code, just for debugging)
             print(key)
